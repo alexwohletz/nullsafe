@@ -1,22 +1,22 @@
-# NullSafe
+# safepath
 
 A Python library providing null-safe attribute and key access through a simple chaining API.
 
 ## Installation
 
 ```bash
-pip install nullsafe
+pip install safepath
 ```
 
 ## Usage
 
 ```python
-from nullsafe import ns
+from safepath import sp
 
 # Basic usage
 data = {"user": {"name": "John"}}
-name = ns(data)["user"]["name"]()  # Returns "John"
-missing = ns(data)["user"]["age"]()  # Returns None
+name = sp(data)["user"]["name"]()  # Returns "John"
+missing = sp(data)["user"]["age"]()  # Returns None
 
 # Object attribute access
 class User:
@@ -25,8 +25,8 @@ class User:
         self.address = None
 
 user = User()
-name = ns(user).name()  # Returns "John"
-city = ns(user).address.city()  # Returns None
+name = sp(user).name()  # Returns "John"
+city = sp(user).address.city()  # Returns None
 
 # Chaining
 data = {
@@ -34,8 +34,8 @@ data = {
         {"profile": {"address": {"city": "New York"}}}
     ]
 }
-city = ns(data)["users"][0]["profile"]["address"]["city"]()  # Returns "New York"
-missing = ns(data)["users"][1]["profile"]["address"]["city"]()  # Returns None
+city = sp(data)["users"][0]["profile"]["address"]["city"]()  # Returns "New York"
+missing = sp(data)["users"][1]["profile"]["address"]["city"]()  # Returns None
 ```
 
 ## Features

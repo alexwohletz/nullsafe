@@ -1,13 +1,13 @@
-"""Tests for the nullsafe package."""
+"""Tests for the safepath package."""
 
 import unittest
-from nullsafe import ns, NullSafe
+from safepath import sp, SafePath
 
-class TestNullSafe(unittest.TestCase):
+class TestSafePath(unittest.TestCase):
     def test_basic_value_access(self):
         # Test direct value access
-        self.assertEqual(ns(42)(), 42)
-        self.assertIsNone(ns(None)())
+        self.assertEqual(sp(42)(), 42)
+        self.assertIsNone(sp(None)())
 
     def test_attribute_access(self):
         # Test attribute access on objects
@@ -17,24 +17,24 @@ class TestNullSafe(unittest.TestCase):
                 self.age = 30
 
         person = Person()
-        self.assertEqual(ns(person).name(), "John")
-        self.assertEqual(ns(person).age(), 30)
-        self.assertIsNone(ns(person).unknown_attr())
-        self.assertIsNone(ns(None).any_attr())
+        self.assertEqual(sp(person).name(), "John")
+        self.assertEqual(sp(person).age(), 30)
+        self.assertIsNone(sp(person).unknown_attr())
+        self.assertIsNone(sp(None).any_attr())
 
     def test_item_access(self):
         # Test dictionary access
         data = {"name": "John", "age": 30}
-        self.assertEqual(ns(data)["name"](), "John")
-        self.assertEqual(ns(data)["age"](), 30)
-        self.assertIsNone(ns(data)["unknown_key"]())
-        self.assertIsNone(ns(None)["any_key"]())
+        self.assertEqual(sp(data)["name"](), "John")
+        self.assertEqual(sp(data)["age"](), 30)
+        self.assertIsNone(sp(data)["unknown_key"]())
+        self.assertIsNone(sp(None)["any_key"]())
 
         # Test list access
         lst = [1, 2, 3]
-        self.assertEqual(ns(lst)[0](), 1)
-        self.assertIsNone(ns(lst)[10]())
-        self.assertIsNone(ns(None)[0]())
+        self.assertEqual(sp(lst)[0](), 1)
+        self.assertIsNone(sp(lst)[10]())
+        self.assertIsNone(sp(None)[0]())
 
     def test_chaining(self):
         # Test chaining of attribute and item access
@@ -48,11 +48,11 @@ class TestNullSafe(unittest.TestCase):
             }
         }
         self.assertEqual(
-            ns(data)["user"]["profile"]["address"]["city"](),
+            sp(data)["user"]["profile"]["address"]["city"](),
             "New York"
         )
         self.assertIsNone(
-            ns(data)["user"]["profile"]["nonexistent"]["field"]()
+            sp(data)["user"]["profile"]["nonexistent"]["field"]()
         )
 
     def test_nested_none(self):
@@ -60,19 +60,19 @@ class TestNullSafe(unittest.TestCase):
         data = {
             "user": None
         }
-        self.assertIsNone(ns(data)["user"]["any"]["path"]())
+        self.assertIsNone(sp(data)["user"]["any"]["path"]())
 
     def test_immutability(self):
-        # Test that NullSafe objects are immutable
-        wrapper = ns(42)
+        # Test that SafePath objects are immutable
+        wrapper = sp(42)
         with self.assertRaises(AttributeError):
             wrapper.new_attr = "value"
 
     def test_repr(self):
         # Test string representation
-        self.assertEqual(repr(ns(42)), "NullSafe(42)")
-        self.assertEqual(repr(ns(None)), "NullSafe(None)")
-        self.assertEqual(repr(ns("test")), "NullSafe('test')")
+        self.assertEqual(repr(sp(42)), "SafePath(42)")
+        self.assertEqual(repr(sp(None)), "SafePath(None)")
+        self.assertEqual(repr(sp("test")), "SafePath('test')")
 
 if __name__ == '__main__':
     unittest.main()

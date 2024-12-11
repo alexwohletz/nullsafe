@@ -1,6 +1,6 @@
-"""NullSafe implementation."""
+"""SafePath implementation."""
 
-class NullSafe:
+class SafePath:
     """
     A null-safe wrapper that allows chaining of attribute and key accesses
     on potentially None or missing data. At the end of the chain,
@@ -16,20 +16,20 @@ class NullSafe:
         # If current value is None or does not have the attribute, return NullSafe(None)
         val = object.__getattribute__(self, "_value")
         if val is None:
-            return NullSafe(None)
+            return SafePath(None)
         try:
-            return NullSafe(getattr(val, name))
+            return SafePath(getattr(val, name))
         except AttributeError:
-            return NullSafe(None)
+            return SafePath(None)
 
     def __getitem__(self, key):
         val = object.__getattribute__(self, "_value")
         if val is None:
-            return NullSafe(None)
+            return SafePath(None)
         try:
-            return NullSafe(val[key])
+            return SafePath(val[key])
         except (KeyError, IndexError, TypeError):
-            return NullSafe(None)
+            return SafePath(None)
 
     def __call__(self):
         # End of the chain, return the underlying value
@@ -37,13 +37,14 @@ class NullSafe:
 
     def __setattr__(self, name, value):
         # Disallow setting attributes on this proxy
-        raise AttributeError("NullSafe object is immutable")
+        raise AttributeError("SafePath object is immutable")
 
     def __repr__(self):
         val = object.__getattribute__(self, "_value")
-        return f"NullSafe({val!r})"
+        return f"SafePath({val!r})"
 
 
-def ns(value):
-    """Return a NullSafe wrapper around the given value."""
-    return NullSafe(value)
+def sp(value):
+    """Return a SafePath wrapper around the given value."""
+    return SafePath(value)
+
