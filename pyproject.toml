@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nullsafe"
-version = "0.1.0"
+version = "0.1.0a1"
 description = "A Python library providing null-safe attribute and key access through a simple chaining API"
 readme = "README.md"
 requires-python = ">=3.7"
